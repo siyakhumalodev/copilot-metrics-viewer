@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 # Dockerfile for standalone sync job
 # This creates a lightweight container that only runs the sync service
 # Use this for Kubernetes CronJobs or scheduled container instances
@@ -9,7 +11,9 @@ FROM base AS builder
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci
+COPY scripts/npm-private-registry.mjs ./scripts/
+RUN --mount=type=secret,id=npm_env,required=false \
+	NPM_REGISTRY_ENV_FILE=/run/secrets/npm_env node scripts/npm-private-registry.mjs ci
 
 # Copy source code
 COPY server ./server
@@ -28,7 +32,9 @@ ENV NODE_ENV=production
 
 # Copy package files and install ALL dependencies (including tsx for runtime)
 COPY package.json package-lock.json ./
-RUN npm ci
+COPY scripts/npm-private-registry.mjs ./scripts/
+RUN --mount=type=secret,id=npm_env,required=false \
+	NPM_REGISTRY_ENV_FILE=/run/secrets/npm_env node scripts/npm-private-registry.mjs ci
 
 # Copy source files from builder
 COPY --from=builder /app/server ./server

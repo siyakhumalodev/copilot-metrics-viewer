@@ -10,6 +10,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "prepare": "nuxt prepare",
+    "install:private": "node scripts/npm-private-registry.mjs install",
+    "ci:private": "node scripts/npm-private-registry.mjs ci",
     "typecheck": "nuxt typecheck",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
