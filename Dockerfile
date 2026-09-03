@@ -15,7 +15,7 @@ WORKDIR /app
 
 COPY --chown=1000:1000 package*.json ./
 COPY --chown=1000:1000 scripts/npm-private-registry.mjs ./scripts/
-RUN --mount=type=secret,id=npm_env,required=false \
+RUN --mount=type=secret,id=npm_env,required=false,uid=1000 \
     NPM_REGISTRY_ENV_FILE=/run/secrets/npm_env node scripts/npm-private-registry.mjs ci
 COPY --chown=1000:1000 . .
 RUN npm run build
@@ -71,7 +71,7 @@ COPY --chown=1000:1000 e2e-tests ./e2e-tests
 COPY --chown=1000:1000 playwright.config.ts playwright.docker.config.ts tsconfig.json package*.json ./
 COPY --chown=1000:1000 scripts/npm-private-registry.mjs ./scripts/
 
-RUN --mount=type=secret,id=npm_env,required=false \
+RUN --mount=type=secret,id=npm_env,required=false,uid=1000 \
     NPM_REGISTRY_ENV_FILE=/run/secrets/npm_env NODE_ENV=development node scripts/npm-private-registry.mjs install
 
 ENTRYPOINT [ "npx", "playwright", "test", "-c", "playwright.docker.config.ts", "--workers", "2"]

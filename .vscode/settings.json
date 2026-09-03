@@ -3,5 +3,7 @@
         "**/node_modules/**": true,
         "**/.git/**": true,
         "**/dist/**": true
-    }
+    },
+    "codeQL.githubDatabase.download": "never",
+    "sarif-viewer.connectToGithubCodeScanning": "off"
 }

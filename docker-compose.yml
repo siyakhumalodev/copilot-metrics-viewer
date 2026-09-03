@@ -95,6 +95,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      secrets:
+        - source: npm_env
+          target: npm_env
     ports:
       - "3000:80"
     environment:
@@ -128,6 +131,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.sync
+      secrets:
+        - source: npm_env
+          target: npm_env
     environment:
       - NUXT_PUBLIC_SCOPE=organization
       - NUXT_PUBLIC_GITHUB_ORG=${NUXT_PUBLIC_GITHUB_ORG:-your-org}
@@ -147,6 +153,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      secrets:
+        - source: npm_env
+          target: npm_env
       args:
         mode: playwright
     environment:
@@ -174,6 +183,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      secrets:
+        - source: npm_env
+          target: npm_env
       args:
         mode: playwright
     environment:
@@ -196,6 +208,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      secrets:
+        - source: npm_env
+          target: npm_env
       args:
         mode: playwright
     environment:
@@ -216,3 +231,7 @@ services:
 # postgres_data — PostgreSQL data directory
 volumes:
   postgres_data:
+
+secrets:
+  npm_env:
+    file: .env

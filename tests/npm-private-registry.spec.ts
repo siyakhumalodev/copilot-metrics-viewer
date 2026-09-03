@@ -1,3 +1,5 @@
+// @vitest-environment node
+
 import { describe, expect, it } from 'vitest'
 import { createNpmConfig } from '../scripts/npm-private-registry.mjs'
 
@@ -19,6 +21,14 @@ describe('createNpmConfig', () => {
   it('rejects an insecure registry URL', () => {
     expect(() => createNpmConfig('http://registry.example.test/npm/', 'user', 'pat'))
       .toThrow('REGISTRY_FEED_URL must use HTTPS')
+  })
+
+  it('rejects an Azure Artifacts feed URL without the npm registry path', () => {
+    expect(() => createNpmConfig(
+      'https://pkgs.dev.azure.com/example/_packaging/feed/',
+      'user',
+      'pat',
+    )).toThrow('Azure Artifacts REGISTRY_FEED_URL must end with /npm/registry/')
   })
 
   it('rejects credentials containing line breaks', () => {

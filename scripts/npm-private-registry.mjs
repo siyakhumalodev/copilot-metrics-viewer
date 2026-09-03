@@ -13,6 +13,11 @@ export function createNpmConfig(feedUrl, username, password) {
     throw new Error('REGISTRY_FEED_URL must use HTTPS')
   }
 
+  if (registryUrl.hostname === 'pkgs.dev.azure.com'
+    && !registryUrl.pathname.endsWith('/npm/registry/')) {
+    throw new Error('Azure Artifacts REGISTRY_FEED_URL must end with /npm/registry/')
+  }
+
   if ([username, password].some(value => /[\r\n]/.test(value))) {
     throw new Error('Registry credentials must not contain line breaks')
   }
